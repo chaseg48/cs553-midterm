@@ -77,8 +77,20 @@ query a database if it knows that the data that is being requested hasn't been m
     "completed": false
 }
 
-# Part 3-6
-See README
+# Part 3
+See `README.md`
+
+# Part 4
+## Middleware
+The error handler and logger are implemented in middleware software to make the code more modular. In addition, it helps
+keep the scope of the service code to the essential functions of the service. Finally, it allows separate services
+to make use of the same infrastructure code which makes the software more scalable.
+
+## Part 5
+See `README.md`
+
+## Part 6
+See `src/openapi.yml`
 
 # Part 7
 ## 1. Code vs Contract
@@ -95,3 +107,12 @@ Client developers need to understand the behavior of the API that they are acces
 the developer know what format the requested data will be in. It also allows the developer to design useful tests and
 handle potential errors. Inaccurate documentation leaves the developer unsure of how to interface with the API and
 creates the potential for unhandled errors and edge cases.
+
+# Part 8 Graduate
+## Option A - Architecture Critique
+A multi-service architecture could be used to expand the current course API. The grades and assignments could be grouped
+into one service since it is unlikely that one would be accessed without the other. The users and notifications
+services could be separate services as well. The services would communicate to one another through middleware. For
+example, if the assignments/grades service was updated, it could make an API call to the notifications service
+to notify the users. This would in turn result in the notifications service accessing the users service. All of this
+internal logic would be abstracted from the client which would access the course API through one entry point.
