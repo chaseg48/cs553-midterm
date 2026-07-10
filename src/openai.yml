@@ -1,0 +1,308 @@
+openapi: 3.0.3
+info:
+  title: Course Task Tracker API
+  version: 1.0.0
+  description: >
+    HTTP JSON API for managing course  tasks.
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /health:
+    get:
+      summary: Health check
+      description: Returns a simple status response to show that the server is running.
+      responses:
+        "200":
+          description: Server is running
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Server is OK
+
+  /api/tasks:
+    get:
+      summary: Get all course tasks
+      description: Returns a list containing all of the course tasks.
+      responses:
+        "200":
+          description: Task list response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TaskListResponse"
+              example:
+                tasks:
+                  - id: 1
+                    title: Watch Week 3 lecture
+                    course: CS453
+                    completed: false
+                  - id: 2
+                    title: Watch Week 4 lecture
+                    course: CS453
+                    completed: false
+    post:
+      summary: Create a new task
+      description: Add a new task to the list.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schema/NewTaskInput"
+            example:
+              title: Watch Week 3 lecture
+              course: CS553
+              completed: false
+      responses:
+        "201":
+          description: Item added response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Task"
+              example:
+                id: 1
+                title: Watch Week 3 lecture
+                course: CS453
+                completed: false
+        "400":
+          description: Invalid JSON or bad request.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Invalid JSON
+
+  /api/tasks/{id}:
+    get:
+      summary: List single task
+      description: List specific task by id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The task ID from the URL path
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "200":
+          description: List single task response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Task"
+              example:
+                id: 1
+                title: Watch Week 3 lecture
+                course: CS453
+                completed: false
+        "404":
+          description: Not found error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Task not found
+      put:
+        summary: Replace task
+        description: Replace a task in the list with a new task.
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: The task ID from the URL path
+            schema:
+              type: integer
+              example: 1
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/NewTaskInput"
+              example:
+                title: Watch Week 3 lecture
+                course: CS553
+                completed: false
+        responses:
+          "200":
+            description: Task replace response.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Task"
+                example:
+                  id: 1
+                  title: Watch Week 3 lecture
+                  course: CS453
+                  completed: false
+          "400":
+            description: Invalid JSON or bad request.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+                example:
+                  error: Invalid JSON
+          "404":
+            description: Not found error response.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+                example:
+                  error: Task not found
+      patch:
+        summary: Partially update task
+        description: Partially update a task in the list.
+        parameters:
+          - name: id
+            in: path
+            required: true
+            description: The task ID from the URL path
+            schema:
+              type: integer
+              example: 1
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/UpdateTaskInput"
+              example:
+                title: Watch Week 3 lecture
+                course: CS553
+                completed: true
+        responses:
+          "200":
+            description: Task update response.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Task"
+                example:
+                  id: 1
+                  title: Watch Week 3 lecture
+                  course: CS453
+                  completed: false
+          "400":
+            description: Invalid JSON or bad request.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+                example:
+                  error: Invalid JSON
+          "404":
+            description: Not found error response.
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ErrorResponse"
+                example:
+                  error: Task not found
+    delete:
+      summary: Delete task
+      description: Deletes a specific task using its id.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The task ID from the URL path.
+          schema:
+            type: integer
+            example: 1
+      responses:
+        "204":
+          description: Delete task response
+        "404":
+          description: Not found error response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                error: Task not found
+              
+
+components:
+  schemas:
+    TaskListResponse:
+      type: object
+      properties:
+        tasks:
+          type: array
+          tasks:
+            $ref: "#/components/schemas/Task"
+          required:
+            - tasks
+
+    Task:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1
+        title:
+          type: string
+          example: Watch Week 3 lecture
+        course:
+          type: string
+          example: CS453
+        completed:
+          type: boolean
+          example: false
+      required:
+        - id
+        - title
+        - course
+        - completed
+
+    NewTaskInput:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Watch Week 3 lecture
+        course:
+          type: string
+          example: CS453
+        completed:
+          type: boolean
+          example: false
+      required:
+        - title
+        - course
+        - completed
+
+    UpdateTaskInput:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Watch Week 3 lecture
+        course:
+          type: string
+          example: CS453
+        completed:
+          type: boolean
+          example: false
+      required:
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          example: not found
+      required:
+        - error

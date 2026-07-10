@@ -1,0 +1,13 @@
+{
+    "name": "cs553-midterm",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "src/server.js",
+    "scripts": {
+        "server": "node src/server.js",
+        "client": "node src/client.js"
+    },
+    "dependencies": {
+        "express": "^5.1.0"
+    }
+}
