@@ -1,4 +1,4 @@
-# Nicholas Garner Midterm
+# Nicholas Garner CS553 Midterm
 
 ## Overview
 
@@ -31,8 +31,21 @@ The following routes are supported:
 | PATCH | `/api/tasks/:id` | Partially update an existing task |
 | DELETE | `/api/tasks/:id` | Delete an existing item |
 
+## Server Logger
+
 The server logs each method and route to the terminal. Also logged are the response status code and the execution time to
 fulfill the request.
+
+Example server output:
+```json
+GET /health
+Status: 200
+Execution time: 0.2870179999999891 ms
+
+POST /api/tasks
+Status: 201
+Execution time: 0.39053400000011607 ms
+```
 
 ## Example routes
 
@@ -198,4 +211,4 @@ The API is documented in the `openapi.yaml` file.
 ## Running
 Open two terminals and navigate to the top level of this directory. Execute `npm run server` to run the server. Then, in
 the other terminal, execute `npm run client`. The client will run through a list of preprogrammed requests and print the
-result to the console.
+result to the console. The server console will log all of the requests from the client.
