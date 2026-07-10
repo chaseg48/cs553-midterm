@@ -4,18 +4,22 @@ import { validateCreate,
          validateUpdate,
          checkExist } from "../middleware/errorHandler.js";
 
+// Route middleware
+// Handle valid API routes
 export function createRouter() {
     const router = express.Router();
 
     let nextTaskId = 1;
     let taskArray = [{id: "0", title: "Complete Midterm", course: "CS553", completed: false}];
 
+    // Return list of all tasks
     router.get("/tasks", (req, res, next) => {
         res.status(200);
         res.body = {tasks: taskArray};
         next();
     });
 
+    // Create new task and auto assign id
     router.post("/tasks", validateCreate, (req, res, next) => {
         let task = {
             id: String(nextTaskId),
@@ -31,6 +35,7 @@ export function createRouter() {
         next();
     });
 
+    // Return task by id
     router.get("/tasks/:id", (req, res, next) => {
         let found = false;
         for (let i = 0; i < taskArray.length; i++) {
@@ -52,6 +57,7 @@ export function createRouter() {
         }
     });
 
+    // Replace task by id
     router.put("/tasks/:id", validateCreate, (req, res, next) => {
         let found = false;
         for (let i = 0; i < taskArray.length; i++) {
@@ -79,6 +85,7 @@ export function createRouter() {
         }
     });
 
+    // Partially update task by id
     router.patch("/tasks/:id", validateUpdate, (req, res, next) => {
         let found = false;
         for (let i = 0; i < taskArray.length; i++) {
@@ -103,6 +110,7 @@ export function createRouter() {
         }
     });
 
+    // Delete task by id
     router.delete("/tasks/:id", (req, res, next) => {
         let found = false;
         for (let i = 0; i < taskArray.length; i++) {
