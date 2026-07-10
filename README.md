@@ -37,7 +37,8 @@ The server logs each method and route to the terminal. Also logged are the respo
 fulfill the request.
 
 Example server output:
-```json
+
+```
 GET /health
 Status: 200
 Execution time: 0.2870179999999891 ms
